@@ -1,10 +1,11 @@
 #include "../include/Network.hpp"
 #include <iostream>
 #include <memory>
+#include "../../../include/DigitR.hpp"
 #include "../include/Layer.hpp"
 
-Network& Network::Get(const Hyperparameters& hyper_params) {
-    static Network m_Instance(hyper_params);
+Network& Network::Get() {
+    static Network m_Instance(DR::Constants::hyper_params);
     return m_Instance;
 }
 

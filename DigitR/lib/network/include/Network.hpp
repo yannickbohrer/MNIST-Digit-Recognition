@@ -12,7 +12,7 @@ public:
         unsigned int neurons_per_hidden_layer;
         unsigned int number_of_output_neurons;
     };
-    static Network& Get(const Hyperparameters&);
+    static Network& Get();
 
 private:
     explicit Network(const Hyperparameters&);
