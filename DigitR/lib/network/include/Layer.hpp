@@ -15,6 +15,6 @@ public:
     std::shared_ptr<Neuron> operator[](unsigned int idx);
 
 private:
-    std::shared_ptr<std::vector<std::shared_ptr<Neuron>>> m_Neurons;
+    std::vector<std::shared_ptr<Neuron>> m_Neurons;
     unsigned int m_Size;
 };

@@ -7,7 +7,8 @@ namespace Constants {
 
 inline const std::string assets_dir = std::string(ASSETS_DIR);
 inline const int pixels_per_number = 784;
+inline const int number_of_output_neurons = 10;
 
-}
+}  // namespace Constants
 
-}
+}  // namespace DR
