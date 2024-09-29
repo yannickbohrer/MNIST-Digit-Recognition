@@ -7,7 +7,7 @@
 
 class Network {
 public:
-    static void Init();
+    static Network& Get();
 
 private:
     explicit Network(unsigned int input_neuron_count = DR::Constants::pixels_per_number,

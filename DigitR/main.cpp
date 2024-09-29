@@ -4,6 +4,6 @@
 
 int main(const int argc, const char** argv) {
     const MNIST_Reader& mnist = MNIST_Reader::Get();
-    Network::Init();
+    const Network& network = Network::Get();
     return EXIT_SUCCESS;
 }

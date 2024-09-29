@@ -3,8 +3,9 @@
 #include <memory>
 #include "../include/Layer.hpp"
 
-void Network::Init() {
+Network& Network::Get() {
     static Network m_Instance;
+    return m_Instance;
 }
 
 Network::Network(unsigned int input_neuron_count, unsigned int number_of_hidden_layers,
