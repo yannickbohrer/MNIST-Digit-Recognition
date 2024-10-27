@@ -26,13 +26,13 @@ void MNIST_Reader::Parse_csv(
     std::fstream file(file_path, std::ios::in);
 
     bool label_pos = true;
-    int sample_number = -1, it = 0;
+    int sample_number = -1;
 
     std::string line;
-    char c_at_pos;
-    std::string cell;
     while (getline(file, line)) {
         ++sample_number;
+
+        // first line in .csv file contains table headers
         if (sample_number == 0)
             continue;
 
@@ -40,22 +40,21 @@ void MNIST_Reader::Parse_csv(
         int label;
         std::array<int, DR::Constants::pixels_per_number> pixels = {0};
 
-        std::stringstream line_parser(line);
-        cell = "";
-        it = 0;
-        while (line_parser >> c_at_pos) {
-            cell += c_at_pos;
-            if (line_parser.peek() == ',') {
+        std::stringstream line_sstream(line);
+        std::string cell = "";
+        int it = 0;
+        char char_at_it;
+        while (line_sstream >> char_at_it) {
+            cell += char_at_it;
+            if (line_sstream.peek() == ',') {
                 if (label_pos) {
                     label = std::stoi(cell);
                     label_pos = false;
-                    line_parser.ignore();
-                    cell = "";
-                    continue;
+                } else {
+                    pixels.at(it) = std::stoi(cell);
+                    ++it;
                 }
-                pixels.at(it) = std::stoi(cell);
-                ++it;
-                line_parser.ignore();
+                line_sstream.ignore();
                 cell = "";
             }
         }

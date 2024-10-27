@@ -1,11 +1,12 @@
 #include "../include/Layer.hpp"
 #include <iostream>
 #include <memory>
+#include "../include/Neuron.hpp"
 
 Layer::Layer(unsigned int size) {
     m_Size = size;
     m_Neurons.reserve(size);
-    for (unsigned int i = 0; i < size; i++)
+    for (unsigned int it = 0; it < size; ++it)
         m_Neurons.emplace_back(std::make_shared<Neuron>(Neuron()));
 }
 
@@ -14,8 +15,8 @@ unsigned int Layer::Size() const {
 }
 
 void Layer::Print_Values() const {
-    for (const std::shared_ptr<Neuron> neuron : m_Neurons)
-        std::cout << neuron->Value() << (neuron == m_Neurons.back() ? "\n\n" : ", ");
+    for (unsigned int it = 0; it < m_Size; ++it)
+        std::cout << it << ". value = " << m_Neurons.at(it)->Value() << "\n";
 }
 
 std::shared_ptr<Neuron> Layer::operator[](unsigned int idx) {

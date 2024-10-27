@@ -18,4 +18,6 @@ inline const Network::Hyperparameters hyper_params = {DR::Constants::pixels_per_
 
 }  // namespace Constants
 
+enum class ActivationFunctions { TANH };
+
 }  // namespace DR
