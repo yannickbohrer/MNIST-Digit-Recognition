@@ -37,11 +37,14 @@ Layer& Network::Output_Layer() {
 void Network::Iteration() {
     //for (unsigned int it = 0; it < m_Hidden_layers.size(); ++it)
     //Update_Activations_Of_Layer(it);
+    m_Input_layer.Print_Values();
     Update_Activations_Of_Hidden_Layer(0);
 }
 
 void Network::Update_Activations_Of_Hidden_Layer(int layer_number) {
     Layer& layer = *m_Hidden_layers.at(layer_number);
+    std::cout << "---------- BEFORE ACTIVATION UPDATES ----------" << std::endl;
+    layer.Print_Values();
     Layer& prev_layer = m_Input_layer;
     if (layer_number != 0)
         prev_layer = *m_Hidden_layers.at(layer_number - 1);
@@ -52,5 +55,6 @@ void Network::Update_Activations_Of_Hidden_Layer(int layer_number) {
         }
         current_neuron.Update_Activation(prev_layer.Size());
     }
-    //layer.Print_Values();
+    std::cout << "---------- AFTER ACTIVATION UPDATES ----------" << std::endl;
+    layer.Print_Values();
 }

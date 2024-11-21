@@ -1,6 +1,5 @@
 #pragma once
 #include <array>
-#include <variant>
 #include "../../mnist/include/MNIST_Reader.hpp"
 #include "../../network/include/Network.hpp"
 
