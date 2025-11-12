@@ -8,9 +8,8 @@ public:
     explicit Layer(unsigned int size);
 
     [[nodiscard]] unsigned int Size() const;
+    [[nodiscard]] std::shared_ptr<Neuron> at(unsigned int) const;
     void Print_Values() const;
-
-    std::shared_ptr<Neuron> operator[](unsigned int idx);
 
 private:
     std::vector<std::shared_ptr<Neuron>> m_Neurons;
