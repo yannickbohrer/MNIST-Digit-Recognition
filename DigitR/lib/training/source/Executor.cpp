@@ -18,6 +18,6 @@ Executor::Executor() : network(Network::Get()), mnist(MNIST_Reader::Get()) {
 void Executor::Process_Input(std::tuple<int, std::array<int, DR::Constants::pixels_per_number>>& sample) {
     std::array<int, DR::Constants::pixels_per_number>& pixels = std::get<1>(sample);
     for (unsigned int it = 0; it < DR::Constants::pixels_per_number; ++it)
-        network.Input_Layer()[it]->Set_Value(Neuron::Normalize(pixels.at(it)));
+        network.Input_Layer()[it]->Set_Activation_Value(Neuron::Normalize(pixels.at(it)));
     network.Iteration();
 }
