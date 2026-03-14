@@ -33,8 +33,8 @@ void Neuron::Update_Activation() {
     Set_Activation_Value(new_activation_value);
 }
 
-double Neuron::Normalize(double val, int number_of_inputs) {
-    return (double)(val / number_of_inputs);
+double Neuron::Normalize(double val, int denominator) {
+    return (double)(val / denominator);
 }
 
 double Neuron::Sigmoid(double val) {

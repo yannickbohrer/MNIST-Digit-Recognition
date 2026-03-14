@@ -10,8 +10,8 @@ namespace DR {
 namespace Constants {
 
 inline const std::string assets_dir = std::string(ASSETS_DIR);
-inline const int pixels_per_number = 784;
-inline const int number_of_output_neurons = 10;
+inline const unsigned int pixels_per_number = 784;
+inline const unsigned int number_of_output_neurons = 10;
 inline const Network::Hyperparameters hyper_params = {DR::Constants::pixels_per_number, NUMBER_OF_HIDDEN_LAYERS,
                                                       NEURONS_PER_HIDDEN_LAYER,
                                                       DR::Constants::number_of_output_neurons};

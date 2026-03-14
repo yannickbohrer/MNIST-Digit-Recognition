@@ -20,29 +20,29 @@ MNIST_Reader::MNIST_Reader()
 
 void MNIST_Reader::Parse_csv(
     std::string& file_path,
-    std::vector<std::tuple<int, std::array<int, DR::Constants::pixels_per_number>>>& data_container) const {
+    std::vector<std::tuple<unsigned int, std::array<unsigned int, DR::Constants::pixels_per_number>>>& data_container)
+    const {
     std::cout << "parsing " << file_path << "   | START" << std::endl;
 
     std::fstream file(file_path, std::ios::in);
 
     bool label_pos = true;
-    int sample_number = -1;
+    unsigned int sample_number = -1;
 
     std::string line;
     while (getline(file, line)) {
         ++sample_number;
 
-        // first line in .csv file contains table headers
-        if (sample_number == 0)
+        if (sample_number == 0)  // first line in .csv file contains table headers
             continue;
 
         label_pos = true;
-        int label;
-        std::array<int, DR::Constants::pixels_per_number> pixels = {0};
+        unsigned int label;
+        std::array<unsigned int, DR::Constants::pixels_per_number> pixels = {0};
 
         std::stringstream line_sstream(line);
         std::string cell = "";
-        int it = 0;
+        unsigned int it = 0;
         char char_at_it;
         while (line_sstream >> char_at_it) {
             cell += char_at_it;
@@ -64,10 +64,12 @@ void MNIST_Reader::Parse_csv(
     std::cout << "parsing " << file_path << "   | DONE" << std::endl;
 }
 
-std::vector<std::tuple<int, std::array<int, DR::Constants::pixels_per_number>>>& MNIST_Reader::Test_data() const {
+std::vector<std::tuple<unsigned int, std::array<unsigned int, DR::Constants::pixels_per_number>>>&
+MNIST_Reader::Test_data() const {
     return MNIST_Reader::Get().m_Test_data;
 }
 
-std::vector<std::tuple<int, std::array<int, DR::Constants::pixels_per_number>>>& MNIST_Reader::Training_data() const {
+std::vector<std::tuple<unsigned int, std::array<unsigned int, DR::Constants::pixels_per_number>>>&
+MNIST_Reader::Training_data() const {
     return MNIST_Reader::Get().m_Training_data;
 }

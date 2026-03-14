@@ -10,7 +10,7 @@ public:
     void Set_Activation_Value(double);
     void Add_To_Linear_Combination(double, double);
     void Update_Activation();
-    [[nodiscard]] static double Normalize(double, int number_of_inputs = 255);
+    [[nodiscard]] static double Normalize(double, int denominator = 255);  // rgb(255) is white
     [[nodiscard]] static double Sigmoid(double);
 
 private:

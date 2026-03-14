@@ -14,7 +14,7 @@ private:
     [[nodiscard]] static Executor& Get();
 
     [[nodiscard]] double Normalize(int) const;
-    void Process_Input(std::tuple<int, std::array<int, DR::Constants::pixels_per_number>>&);
+    void Process_Input(std::tuple<unsigned int, std::array<unsigned int, DR::Constants::pixels_per_number>>&);
 
     Network& network;
     MNIST_Reader& mnist;

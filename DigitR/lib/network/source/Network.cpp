@@ -49,25 +49,17 @@ Layer& Network::Output_Layer() {
 }
 
 void Network::Iteration() {
-    double sum_of_all_input_values = 0;
-    for (unsigned int it = 0; it < m_Input_layer.Size(); ++it)
-        sum_of_all_input_values += m_Input_layer.at(it)->Value();
-    std::cout << "sum_of_all_input_values = " << sum_of_all_input_values << std::endl;
-
+    m_Input_layer.Print_Values();
     for (unsigned int it_layer = 0; it_layer < m_Hidden_layers.size(); ++it_layer)
         Update_Activations_Of_Hidden_Layer(it_layer);
 
-    //m_Input_layer.Print_Values();
     //for (const std::shared_ptr<Layer> layer : m_Hidden_layers)
-    //  layer->Print_Values();
+    //    layer->Print_Values();
     //m_Output_layer.Print_Values();
 }
 
 void Network::Update_Activations_Of_Hidden_Layer(int layer_number) {
     Layer& layer = *m_Hidden_layers.at(layer_number);
-    std::cout << "\n---------- LAYER " << layer_number + 1 << std::endl;
-    std::cout << "---------- BEFORE ACTIVATION UPDATES ----------" << std::endl;
-    layer.Print_Values();
     Layer prev_layer = m_Input_layer;
     if (layer_number != 0)
         prev_layer = *m_Hidden_layers.at(layer_number - 1);
@@ -78,6 +70,4 @@ void Network::Update_Activations_Of_Hidden_Layer(int layer_number) {
                                                      current_neuron.Weights().at(it_prev));
         current_neuron.Update_Activation();
     }
-    std::cout << "---------- AFTER ACTIVATION UPDATES ----------" << std::endl;
-    layer.Print_Values();
 }
