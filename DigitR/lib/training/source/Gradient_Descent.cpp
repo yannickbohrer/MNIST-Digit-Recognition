@@ -1,8 +1,8 @@
-#include <math.h>
 #include <iostream>
+#include <string>
 #include <vector>
 
-std::vector<double>* Gradient(std::vector<double>& x, double (*function)(std::vector<int>& pos)) {
+std::vector<double> Gradient(std::vector<double>& x, double (*function)(std::vector<double>& pos)) {
     std::vector<double> grad(x.size());
     double h = 1e-8;
     double functionX = function(x);
@@ -11,30 +11,51 @@ std::vector<double>* Gradient(std::vector<double>& x, double (*function)(std::ve
         std::vector<double> gradTmp(x.size());
         gradTmp = x;
         gradTmp[i] += h;
-
-        double tmp = (function(gradTmp) - functionX) / h;
+        double hFraction = 1 / h;
+        double tmp = (function(gradTmp) - functionX) * hFraction;
         grad[i] = tmp;
     }
+
     return grad;
+}
+
+template <typename T>
+std::string Print_Vector(std::vector<T> vec) {
+    std::string res = "[";
+    unsigned int vecSizeForLoop = vec.size() - 1;
+    for (unsigned int i = 0; i <= vecSizeForLoop; ++i) {
+        res += vec.at(i);
+        if (i == vecSizeForLoop) {
+            res += "]";
+            break;
+        }
+        res += ", ";
+    }
+    return res;
 }
 
 void Gradient_Descendt(std::vector<double>& xVector, double (*function)(std::vector<double>& pos), double lambda = 1.0,
                        int counter = 0, bool log = false) {
     std::vector<double> grad = Gradient(xVector, function);
-    std::vector<double> vectorStep = xVector + (grad * lambda);
+    std::vector<double> vectorStep = xVector;
+    for (unsigned int i = 0; i < vectorStep.size(); ++i) {
+        double before = vectorStep.at(i);
+        double gradValue = grad.at(i);
+        vectorStep.at(i) = before + (gradValue * lambda);
+    }
 
     double xValue = function(xVector);
     double valueAtFirstStep = function(vectorStep);
     double valueAtStep;
-    double gradLength = grad.getLength();
+    double gradLength = grad.size();
 
     if (counter == 25) {  // max 25 steps
         if (log) {
             std::cout << "Ende wegen Schrittzahl = 25 bei" << std::endl;
-            std::cout << "\tx = " << xVector << std::endl;
+            std::cout << "\tx = " << Print_Vector(xVector) << std::endl;
             std::cout << "\tlambda = " << lambda << std::endl;
             std::cout << "\tf(x) = " << xValue << std::endl;
-            std::cout << "\tgrad f(x) = " << grad << std::endl;
+            std::cout << "\tgrad f(x) = " << Print_Vector(grad) << std::endl;
             std::cout << "\t||grad f(x)|| = " << gradLength << std::endl << std::endl;
         }
         return;
@@ -43,10 +64,10 @@ void Gradient_Descendt(std::vector<double>& xVector, double (*function)(std::vec
     if (gradLength < 1e-5) {  // gradient length < 0.00001 -> desired accuracy
         if (log) {
             std::cout << "Ende wegen ||grad f(x)|| < 1e-5 bei" << std::endl;
-            std::cout << "\tx = " << xVector << std::endl;
+            std::cout << "\tx = " << Print_Vector(xVector) << std::endl;
             std::cout << "\tlambda = " << lambda << std::endl;
             std::cout << "\tf(x) = " << xValue << std::endl;
-            std::cout << "\tgrad f(x) = " << grad << std::endl;
+            std::cout << "\tgrad f(x) = " << Print_Vector(grad) << std::endl;
             std::cout << "\t||grad f(x)|| = " << gradLength << std::endl << std::endl;
         }
         return;
@@ -54,13 +75,13 @@ void Gradient_Descendt(std::vector<double>& xVector, double (*function)(std::vec
 
     if (log) {
         std::cout << "Schritt " << counter << ":" << std::endl;
-        std::cout << "\tx = " << xVector << std::endl;
+        std::cout << "\tx = " << Print_Vector(xVector) << std::endl;
         std::cout << "\tlambda = " << lambda << std::endl;
         std::cout << "\tf(x) = " << xValue << std::endl;
-        std::cout << "\tgrad f(x) = " << grad << std::endl;
+        std::cout << "\tgrad f(x) = " << Print_Vector(grad) << std::endl;
         std::cout << "\t||grad f(x)|| = " << gradLength << std::endl;
         std::cout << std::endl;
-        std::cout << "\tx_neu = " << vectorStep << std::endl;
+        std::cout << "\tx_neu = " << Print_Vector(vectorStep) << std::endl;
         std::cout << "\tf(x_neu) = " << valueAtFirstStep << std::endl;
         std::cout << std::endl;
     }
@@ -69,11 +90,15 @@ void Gradient_Descendt(std::vector<double>& xVector, double (*function)(std::vec
         valueAtStep = valueAtFirstStep;
         while (valueAtStep <= xValue) {
             lambda = lambda / 2;
-            vectorStep = x + (grad * lambda);
+            for (unsigned int i = 0; i < vectorStep.size(); ++i) {
+                double before = vectorStep.at(i);
+                double gradValue = grad.at(i);
+                vectorStep.at(i) = before + (gradValue * lambda);
+            }
             valueAtStep = function(vectorStep);
             if (log) {
                 std::cout << "\t halbiere Schrittweite (lambda = " << lambda << "):" << std::endl;
-                std::cout << "\tx_neu = " << vectorStep << std::endl;
+                std::cout << "\tx_neu = " << Print_Vector(vectorStep) << std::endl;
                 std::cout << "\tf(x_neu) = " << valueAtStep << std::endl << std::endl;
             }
         }
@@ -81,12 +106,17 @@ void Gradient_Descendt(std::vector<double>& xVector, double (*function)(std::vec
         return;
     }
 
-    std::vector<int> vectorTest = x + (grad * lambda * 2);
+    std::vector<double> vectorTest = xVector;
+    for (unsigned int i = 0; i < vectorStep.size(); ++i) {
+        double before = vectorStep.at(i);
+        double gradValue = grad.at(i);
+        vectorStep.at(i) = before + (gradValue * lambda * 2);
+    }
     double valueAtTest = function(vectorTest);
 
     if (log) {
         std::cout << "\tTest mit doppelter Schrittweite (lambda = " << lambda * 2 << "):" << std::endl;
-        std::cout << "\tx_test = " << vectorTest << std::endl;
+        std::cout << "\tx_test = " << Print_Vector(vectorTest) << std::endl;
         std::cout << "\tf(x_test) = " << valueAtTest << std::endl;
     }
 
